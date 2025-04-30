@@ -1,0 +1,93 @@
+# Central configuration for the HKSL Real-Time Model project
+
+# --- Project Structure ---
+project_root: null # Determined dynamically relative to this file
+
+# --- Data Settings ---
+data:
+  dataset_dir: dataset # Relative path to raw video data from project root
+  max_seq_length: 60 # Frames per sequence for model input (LSTM/Attention sequence length)
+  num_features: 774 # UPDATED: 33*4 (pose) + 2*(21*3) (hands) + velocity + acceleration = 258 * 3
+  min_video_frames: 6 # Minimum valid frames required for a video sample including buffer for diffs
+
+# --- Model Settings ---
+model:
+  name: conv1d_corrplus_lstm_mha_pva # Identifier reflecting updated modules + Pos/Vel/Acc features (UPDATED)
+  save_dir: models # Relative path to save models/encoders
+  # Architecture parameters
+  conv1_filters: 64
+  conv1_kernel: 3
+  pool1_size: 2
+  conv2_filters: 128
+  conv2_kernel: 3
+  # CorrNet+ Inspired Modules (ENABLED & UPDATED)
+  use_correlation: true         # Enable Correlation module
+  corr_neighbors: 3             # Num neighbors (window_size = 2*neighbors+1 = 7)
+  corr_reduction_factor: 16     # Feature reduction inside correlation
+  correlation_alpha: 0.1        # Initial mixing weight for correlation
+  corr_use_attention: true      # Use attention mechanism in correlation
+  dropout_corr: 0.4             # Dropout after correlation
+  use_temporal_weighting: true  # Enable Temporal Weighting module
+  temporal_reduction_factor: 16 # Feature reduction inside temporal weighting
+  temporal_num_convs: 3         # Num parallel dilated convs in temporal weighting
+  temporal_weighting_alpha: 0.1 # Initial mixing weight for temporal weighting
+  dropout_temp_weight: 0.4      # Dropout after temporal weighting
+  # Recurrent Layer Type
+  use_bilstm: true              # Use Bidirectional LSTM (True) or standard LSTM (False)
+  # LSTM/BiLSTM parameters
+  lstm1_units: 128
+  lstm2_units: 128              # Adjusted slightly, output dim is 2*128=256 if BiLSTM
+  # Attention Layer (NEW)
+  mha_heads: 4                  # Number of attention heads
+  mha_key_dim: 128              # Key dimension per head (adjust based on LSTM output)
+  # Dense Layer
+  dense1_units: 128             # Adjusted slightly
+  # Dropout values
+  dropout_conv: 0.3
+  dropout_lstm1: 0.4
+  dropout_lstm2: 0.4            # Dropout after second LSTM/BiLSTM
+  # dropout_mha: 0.4            # Optional: Add dropout after MHA if needed
+  dropout_dense: 0.4
+
+# --- Training Settings ---
+training:
+  epochs: 150
+  batch_size: 32
+  validation_split: 0.3
+  learning_rate: 0.0005
+  # Callbacks
+  early_stopping_patience: 35
+  reduce_lr_patience: 10
+  reduce_lr_factor: 0.2
+  # Logging
+  log_dir: logs/fit # Relative path for TensorBoard logs
+  # Augmentation parameters (used by data_processing.augment_sequence)
+  augmentation:
+    apply_noise_prob: 0.5
+    apply_masking_prob: 0.3
+    apply_spatial_prob: 0.5
+    noise_level: 0.01
+    mask_ratio: 0.1
+    max_angle: 5.0
+    max_translate: 0.05
+    max_scale_delta: 0.1
+
+# --- Real-Time Prediction Settings ---
+prediction:
+  threshold: 0.6                 # Confidence threshold for a single frame prediction
+  sequence_buffer_size: 60       # Should match data.max_seq_length
+  stability_frames: 5            # Number of consecutive frames for stability check (Renamed from stability_threshold)
+  stability_confidence_threshold: 0.55 # Minimum average confidence over stable frames (NEW)
+  min_frames_for_prediction: 15  # Minimum frames in buffer before attempting prediction
+  top_n_visualization: 3
+
+# --- Data Recording Settings ---
+recording:
+  frame_width: 640
+  frame_height: 480
+  default_fps: 20
+
+# --- MediaPipe Settings ---
+mediapipe:
+  min_detection_confidence: 0.5
+  min_tracking_confidence: 0.5
