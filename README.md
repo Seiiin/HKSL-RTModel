@@ -19,7 +19,7 @@ This project implements a deep learning model for real-time Hong Kong Sign Langu
 ## Project Structure
 
 
-/Users/fanzhende/Documents/GitHub/HKSL-RTModel
+HKSL-RTModel
 ├── configs/ # Configuration files (config.yaml)
 │ └── config.yaml
 ├── dataset/ # Raw video data, organized by sign name
@@ -53,7 +53,7 @@ This project implements a deep learning model for real-time Hong Kong Sign Langu
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/fanzhende/HKSL-RTModel.git
+    git clone https://github.com/Seiiin/HKSL-RTModel
     cd HKSL-RTModel
     ```
 
