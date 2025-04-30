@@ -18,37 +18,35 @@ This project implements a deep learning model for real-time Hong Kong Sign Langu
 
 ## Project Structure
 
-
-HKSL-RTModel
-├── configs/ # Configuration files (config.yaml)
-│ └── config.yaml
-├── dataset/ # Raw video data, organized by sign name
-│ ├── sign1/
-│ │ └── video1.mp4
-│ └── sign2/
-│ └── video2.mp4
-├── hksl_rtmodel/ # Core Python package for the model
-│ ├── config_loader.py # Loads configuration
-│ ├── data_processing.py # Data loading, feature calculation, augmentation, preparation
-│ ├── feature_extraction.py # MediaPipe landmark extraction and normalization
-│ ├── models.py # Model definition (Keras)
-│ ├── modules.py # Custom Keras layers (Attention Wrapper, CorrNet+ inspired)
-│ ├── predictor.py # Logic for real-time prediction state management
-│ ├── training.py # Training loop, callbacks, evaluation
-│ └── utils.py # Utility functions (drawing landmarks, probabilities)
-├── logs/ # TensorBoard logs from training runs
-│ └── fit/
-│ └── YYYYMMDD-HHMMSS/
-├── models/ # Saved trained models (.keras) and label encoders (.pkl)
-├── scripts/ # Utility scripts
-│ └── record.py # Script to record new sign language samples
-├── .gitignore
-├── .python-version # Specifies Python version (e.g., for pyenv)
-├── predict_realtime.py # Main script to run real-time prediction
-├── pyproject.toml # Project metadata and dependencies (e.g., for Poetry or Hatch)
-├── README.md # This file
-└── train.py # Main script to train the model
-
+    HKSL-RTModel
+    ├── configs/ # Configuration files (config.yaml)
+    │ └── config.yaml
+    ├── dataset/ # Raw video data, organized by sign name
+    │ ├── sign1/
+    │ │ └── video1.mp4
+    │ └── sign2/
+    │ └── video2.mp4
+    ├── hksl_rtmodel/ # Core Python package for the model
+    │ ├── config_loader.py # Loads configuration
+    │ ├── data_processing.py # Data loading, feature calculation, augmentation, preparation
+    │ ├── feature_extraction.py # MediaPipe landmark extraction and normalization
+    │ ├── models.py # Model definition (Keras)
+    │ ├── modules.py # Custom Keras layers (Attention Wrapper, CorrNet+ inspired)
+    │ ├── predictor.py # Logic for real-time prediction state management
+    │ ├── training.py # Training loop, callbacks, evaluation
+    │ └── utils.py # Utility functions (drawing landmarks, probabilities)
+    ├── logs/ # TensorBoard logs from training runs
+    │ └── fit/
+    │ └── YYYYMMDD-HHMMSS/
+    ├── models/ # Saved trained models (.keras) and label encoders (.pkl)
+    ├── scripts/ # Utility scripts
+    │ └── record.py # Script to record new sign language samples
+    ├── .gitignore
+    ├── .python-version # Specifies Python version (e.g., for pyenv)
+    ├── predict_realtime.py # Main script to run real-time prediction
+    ├── pyproject.toml # Project metadata and dependencies (e.g., for Poetry or Hatch)
+    ├── README.md # This file
+    └── train.py # Main script to train the model
 
 ## Setup
 
